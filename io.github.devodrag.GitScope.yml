@@ -49,8 +49,10 @@ modules:
     build-commands:
       - npm run build
       # cargo discovers .cargo/config.toml from the current directory upward,
-      # so the build must run inside src-tauri for vendored sources to apply
-      - cd src-tauri && cargo build --offline --release
+      # so the build must run inside src-tauri for vendored sources to apply.
+      # custom-protocol embeds the built frontend into the binary; without it
+      # the app expects a dev server and renders a blank window.
+      - cd src-tauri && cargo build --offline --release --features custom-protocol
       - install -Dm755 src-tauri/target/release/gitscope -t /app/bin
       - install -Dm644 packaging/flatpak/io.github.devodrag.GitScope.metainfo.xml
         /app/share/metainfo/io.github.devodrag.GitScope.metainfo.xml
